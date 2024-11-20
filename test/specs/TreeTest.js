@@ -4,6 +4,6 @@ import SecurePage from '../pageobjects/secure.page.js'
 
 describe('Order drop down', () => {
     it('should test the order pages', async () => {
-        await OrderPage.open()
+        await OrderPage.ordertest();
     })
 })

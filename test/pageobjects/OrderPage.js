@@ -10,17 +10,24 @@ class OrderPage extends Base {
     /**
      * define selectors using getter methods
      */
-    get OrderDropDown () {
+    get orderDropDown () {
         return $('#id1732114078862');
     }
 
-    // get inputPassword () {
-    //     return $('#password');
-    // }
+    get orderOption () {
+        return $('.page-item.simple.state-displayed.items-list-item.items-list-weak2814.state-filtered.last-item');
+    }
+    get ancestorOption () {
+        return $('#imgOption-0')
+    }
 
-    // get btnSubmit () {
-    //     return $('input[type="submit"]');
-    // }
+    get descendentOption () {
+        return $('#imgOption-1');
+    }
+    get treePage () {
+        return $('a[href="https://customfamilyrtreeart.com"]')
+    }
+    
 
     // usernames = ['standard_user', 'locked_out_user', 'problem_user', 'performance_glitch_user', 'error_user', 'visual_user'];
 
@@ -30,7 +37,15 @@ class OrderPage extends Base {
      * e.g. to login using corect username and password and then again with a bad password
      */
     async ordertest () {
-        await this.OrderDropDown.click();
+        await this.open();
+        await expect(this.treePage).toBeExisting();
+        await expect(this.orderDropDown).toBeExisting();
+        await this.orderDropDown.click();
+        await this.orderOption.click();
+        await expect(this.ancestorOption).toBeExisting();
+        await browser.pause(2000);
+        await this.descendentOption.click();
+
     }
 
 //         await this.inputPassword.setValue(password);
@@ -75,9 +90,9 @@ class OrderPage extends Base {
     /**
      * overwrite specific options to adapt it to page object
      */
-    open () {
-        return super.open();
-    }
+    // open () {
+    //     return super.open();
+    // }
 }
 
 export default new OrderPage();
