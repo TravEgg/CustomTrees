@@ -47,14 +47,22 @@ class OrderPage extends Base {
         return $('a[href="https://customfamilyrtreeart.com"]')
     }
 
+    get ordertohomePage() {
+        return $('//a[contains(text(), "HOME")]')
+    }
+    
     get homePage() {
         return $('//span[contains(text(), "HOME")]')
     }
-    
+
     async clickDesign() {
         if (await (this.designChoice).isExisting()) {
             await this.designChoice.click();
         }
+    }
+    
+    get ancestryTrees() {
+        return $('//div[contains(text(), "Ancestry")]')
     }
 
     // async initialBgColor() {
@@ -67,9 +75,7 @@ class OrderPage extends Base {
     //     return bgColor.value;
     // }
 
-    get ancestryTrees() {
-        return $('//div[contains(text(), "Ancestry")]')
-    }
+    
 
     // usernames = ['standard_user', 'locked_out_user', 'problem_user', 'performance_glitch_user', 'error_user', 'visual_user'];
 
@@ -90,11 +96,13 @@ class OrderPage extends Base {
         await this.descendantsOption.moveTo();
         //await expect(this.hoverBgColor.value).not.ToBe(this.initialBgColor.value);
         await this.descendantsOption.click();
-        await browser.back();
+        await this.ordertohomePage.click();
+        await this.orderDropDown.click();
+        await expect(this.orderOption).toBeExisting();
+        await this.orderOption.click();
         await this.clickDesign();
         await this.ancestorOption.click();
-        await browser.back();
-        await this.homePage.click();
+        await this.ordertohomePage.click();
         await this.orderDropDown.click();
         await this.giftOption.click();
         await this.homePage.click();
