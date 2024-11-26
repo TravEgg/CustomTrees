@@ -1,7 +1,7 @@
 import { expect } from '@wdio/globals'
 import OrderPage from '../pageobjects/OrderPage.js'
 import SecurePage from '../pageobjects/secure.page.js'
-import TreesDD from '../TreesDD.js'
+import TreesDD from '../pageobjects/TreesDD.js'
 
 
 describe('Order process page 1', () => {
