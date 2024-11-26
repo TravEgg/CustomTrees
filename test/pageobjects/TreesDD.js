@@ -4,10 +4,11 @@ import { expect } from '@wdio/globals'
 import securePage from './secure.page.js';
 import {browser} from '@wdio/globals'
 
+
 /**
  * sub page containing specific selectors and methods for a specific page
  */
-class TreesDD {
+class TreesDD extends Base {
     /**
      * define selectors using getter methods
      */
@@ -27,6 +28,35 @@ class TreesDD {
     get homePage() {
         return $('//span[contains(text(), "HOME")]')
     }
+    
+    get ancestryTrees() {
+        return $('//div[contains(text(), "Ancestry")]')
+    }
+
+    get descendantTrees() {
+        return $('//div[contains(text(), "Descendant")]')
+    }
+
+    get additionalDesigns() {
+        return $('//div[contains(text(), "Additional")]')
+    }
+
+    get gallery() {
+        return $('//div[contains(text(), "Gallery")]')
+    }
+
+    get pagetext() {
+        return $('//div[contains(text(), "Your Family History")]')
+    }
+    ddOptions = ['Ancestry', 'Descendant', 'Additional', 'Gallery'];
+
+    menuOptions = [
+    { element: () => this.ancestryTrees, url: 'https://customfamilytreeart.com/ancestry-trees' },
+    { element: () => this.descendantTrees, url: 'https://customfamilytreeart.com/descendant-trees' },
+    { element: () => this.additionalDesigns, url: 'https://customfamilytreeart.com/additional-designs' },
+    { element: () => this.gallery, url: 'https://customfamilytreeart.com/gallery' },
+  ];
+    
 
     // async initialBgColor() {
     //     const bgColor = await this.descendantsOption.getCSSProperty('background-color');
@@ -38,9 +68,7 @@ class TreesDD {
     //     return bgColor.value;
     // }
 
-    get ancestryTrees() {
-        return $('//div[contains(text(), "Ancestry")]')
-    }
+    
 
     // usernames = ['standard_user', 'locked_out_user', 'problem_user', 'performance_glitch_user', 'error_user', 'visual_user'];
 
@@ -51,9 +79,78 @@ class TreesDD {
      */
     async treesddtest () {
         await this.open();
+        // Define an array of menu options and their expected URLs
+
+  
+        for (const option of this.menuOptions) {
+    // Move to the dropdown menu
+            await this.treesDropDown.moveTo();
+  
+    // Click the current menu option
+            await option.element().click();
+  
+    // Wait for the URL to match the expected value
+            await browser.waitUntil(
+                async () => (await browser.getUrl()) === option.url,
+                {
+                    timeout: 5000, // Timeout in milliseconds
+                    timeoutMsg: `URL did not match the expected value for ${option.url} within 5 seconds`,
+                }
+            );
+  
+    // Optionally, navigate back to the home page after each interaction
+            if (this.homePage) {
+                await this.homePage.click();
+            }
+        }
         await this.treesDropDown.moveTo();
-        await this.treesDropDown.click();
-        await this.ancestryTrees.click(); 
+        await this.pagetext.moveTo();
+        await this.pagetext.click()
+        await expect(this.ancestryTrees).not.toBeExisting();
+    }
+  
+        // await this.treesDropDown.moveTo();
+        // await this.treesDropDown.click();
+        // await this.ancestryTrees.click(); 
+        // await browser.waitUntil(
+        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/ancestry-trees',
+        //     {
+        //       timeout: 5000, // Timeout in milliseconds
+        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
+        //     }
+        //   );          
+        // await this.treesDropDown.moveTo();
+        // await this.descendantTrees.click();
+        // await browser.waitUntil(
+        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/descendant-trees',
+        //     {
+        //       timeout: 5000, // Timeout in milliseconds
+        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
+        //     }
+        //   );
+        //   await this.homePage.click();
+        //   await this.treesDropDown.moveTo();
+        //   await this.additionalDesigns.click();
+
+        //   await browser.waitUntil(
+        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/additional-designs',
+        //     {
+        //       timeout: 5000, // Timeout in milliseconds
+        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
+        //     }
+        //   );
+        //   await this.homePage.click();
+        //   await this.treesDropDown.moveTo();
+        //   await this.gallery.click();
+
+        //   await browser.waitUntil(
+        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/gallery',
+        //     {
+        //       timeout: 5000, // Timeout in milliseconds
+        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
+        //     }
+        //   );
+
         
         
         //await expect(this.treePage).toBeExisting();
@@ -79,7 +176,7 @@ class TreesDD {
         
 
 
-    }
+    
 
  
 //         await this.inputPassword.setValue(password);
