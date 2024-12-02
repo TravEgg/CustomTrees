@@ -2,6 +2,7 @@ import { expect } from '@wdio/globals'
 import OrderPage from '../pageobjects/OrderPage.js'
 import TreesDD from '../pageobjects/TreesDD.js'
 import MainLinks from '../pageobjects/MainLinks.js'
+import GiftCertificates from '../pageobjects/GiftCertificates.js'
 
 
 // describe('Order process page 1', () => {
@@ -21,3 +22,9 @@ describe('All links under Info', () => {
         await MainLinks.mainLinksTest();
     })
 })
+
+// describe('Gift Certicate Link ', () => {
+//     it('should open gift certificate page', async () => {
+//         await GiftCertificates.giftTest();
+//     })
+// })
