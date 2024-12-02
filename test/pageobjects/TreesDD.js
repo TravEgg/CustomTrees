@@ -1,7 +1,7 @@
 import { $ } from '@wdio/globals'
 import Base from './Base.js';
 import { expect } from '@wdio/globals'
-import securePage from './secure.page.js';
+import MainLinks from './MainLinks.js';
 import {browser} from '@wdio/globals'
 
 
@@ -55,7 +55,7 @@ class TreesDD extends Base {
     { element: () => this.descendantTrees, url: 'https://customfamilytreeart.com/descendant-trees' },
     { element: () => this.additionalDesigns, url: 'https://customfamilytreeart.com/additional-designs' },
     { element: () => this.gallery, url: 'https://customfamilytreeart.com/gallery' },
-  ];
+    ];
     
 
     // async initialBgColor() {
