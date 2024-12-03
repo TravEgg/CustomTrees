@@ -44,15 +44,17 @@ class MainPage extends Base {
 
     async mainLinksTest () {
         await this.open();
+        await browser.pause(10000);
+
         // await this.howItWorks.moveTo();
         // await this.howItWorks.click();
-        // await browser.waitUntil(
-        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/how-it-works',
-        //     {
-        //       timeout: 5000, // Timeout in milliseconds
-        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
-        //     }
-        //   );
+        await browser.waitUntil(
+            async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/',
+            {
+              timeout: 5000, // Timeout in milliseconds
+              timeoutMsg: 'URL did not match the expected value within 5 seconds',
+            }
+          );
         // await browser.pause(2000);
         // await TreesDD.homePage.click();
         // await this.nameForms.moveTo();
@@ -96,19 +98,19 @@ class MainPage extends Base {
         //   );
         // await browser.pause(2000);
 
-        for (const option of this.infoLinks) {
+        for (const link of this.infoLinks) {
             // Move to the dropdown menu
-                    await option.element().moveTo();
+                    // await link.element().moveTo();
           
             // Click the current menu option
-                    await option.element().click();
+                    await link.element().click();
           
             // Wait for the URL to match the expected value
                     await browser.waitUntil(
-                        async () => (await browser.getUrl()) === option.url,
+                        async () => (await browser.getUrl()) === link.url,
                         {
                             timeout: 5000, // Timeout in milliseconds
-                            timeoutMsg: `URL did not match the expected value for ${option.url} within 5 seconds`,
+                            timeoutMsg: `URL did not match the expected value for ${link.url} within 5 seconds`,
                         }
                     );
                     await browser.pause(1000);

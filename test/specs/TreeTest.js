@@ -17,14 +17,14 @@ import GiftCertificates from '../pageobjects/GiftCertificates.js'
 //     })
 // })
 
-describe('All links under Info', () => {
-    it('should open corresponding pages', async () => {
-        await MainLinks.mainLinksTest();
-    })
-})
-
-// describe('Gift Certicate Link ', () => {
-//     it('should open gift certificate page', async () => {
-//         await GiftCertificates.giftTest();
+// describe('All links under Info', () => {
+//     it('should open corresponding pages', async () => {
+//         await MainLinks.mainLinksTest();
 //     })
 // })
+
+describe('Gift Certicate Link ', () => {
+    it('should open gift certificate page', async () => {
+        await GiftCertificates.giftTest();
+    })
+})
