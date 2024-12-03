@@ -51,9 +51,13 @@ export const config = {
     //
     capabilities: [{
         browserName: 'chrome',
-        browserName: 'firefox',
+        'wdio:chromedriverOptions': { // or 'wdio:geckodriverOptions', 'wdio:edgedriverOptions'
+            binary: '/Users/student/Desktop/AutomationProjects/Capstone/CustomTrees/node_modules/chromedriver/bin/chromedriver' // or 'geckodriver', 'msedgedriver'
+        }
+        // browserName: 'firefox'
     }],
 
+    // services: ['chromedriver'],
     //
     // ===================
     // Test Configurations
@@ -124,7 +128,7 @@ export const config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    // reporters: ['dot'],
+    reporters: ['spec'],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
