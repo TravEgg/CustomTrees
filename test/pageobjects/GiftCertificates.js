@@ -24,7 +24,7 @@ class GiftCertificates extends Base {
     }
 
     get payPalBtn() {
-      return $('img.paypal-logo.paypal-logo-paypal.paypal-logo-color-blue')
+      return $('div[role="link"].paypal-button-number-0')
     }
 
     get errormsg() {
@@ -66,11 +66,19 @@ class GiftCertificates extends Base {
             timeoutMsg: 'URL did not match the expected value within 5 seconds',
           }
         );
-        await browser.pause(1000);
+        
+        await this.iframe.waitForExist({ timeout: 5000 });
+        await this.iframe.waitForDisplayed({ timeout: 5000 });
         //load iframe to interact with input fields
-        await browser.switchFrame(this.iframe)
+        await browser.switchFrame(this.iframe);
+        await browser.switchToParentFrame();
+        await browser.switchFrame(this.iframe);
+        await this.inputEmailAddress.waitForExist({timeout: 5000})
+        await this.inputEmailAddress.waitForDisplayed({timeout: 5000});
         //Switch to next frame to click PayPal button
-        await browser.switchFrame(this.iframePP)
+        await this.iframePP.waitForExist({ timeout: 5000 });
+        await this.iframePP.waitForDisplayed({ timeout: 5000 });
+        await browser.switchFrame(this.iframePP);
         await expect(this.payPalBtn).toBeExisting();
         await this.payPalBtn.click();
         // Switch back to the ParentFrame
@@ -87,7 +95,8 @@ class GiftCertificates extends Base {
 
         // Function to generate a random string of given length
         function getRandomString(length) {
-            const characters = 'abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+          // !@#$%^&*()_+0123456789
+            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             let result = '';
             for (let i = 1; i < length; i++) {
                 const randomIndex = Math.floor(Math.random() * characters.length);

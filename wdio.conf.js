@@ -52,7 +52,8 @@ export const config = {
     capabilities: [{
         browserName: 'chrome',
         'wdio:chromedriverOptions': { // or 'wdio:geckodriverOptions', 'wdio:edgedriverOptions'
-            binary: '/Users/student/Desktop/AutomationProjects/Capstone/CustomTrees/node_modules/chromedriver/bin/chromedriver' // or 'geckodriver', 'msedgedriver'
+            // binary: '/Users/student/Desktop/AutomationProjects/Capstone/CustomTrees/node_modules/chromedriver/bin/chromedriver' // or 'geckodriver', 'msedgedriver'
+            binary: 'node_modules/chromedriver/bin/chromedriver'
         }
         // browserName: 'firefox'
     }],
