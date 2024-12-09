@@ -38,10 +38,58 @@ class GiftCertificates extends Base {
     get iframePP () {
       return $('iframe.component-frame.visible')
     }
+    get option25 () {
+      return $('//option[contains(text(), "25")]')
+    }
+    get option50 () {
+      return $('//option[contains(text(), "50")]')
+    }
+    get option75 () {
+      return $('//option[contains(text(), "75")]')
+    }
+    get option100 () {
+      return $('//option[contains(text(), "100")]')
+    }
     get option125 () {
       return $('//option[contains(text(), "125")]')
     }
+    get option150 () {
+      return $('//option[contains(text(), "150")]')
+    }
+    get option175 () {
+      return $('//option[contains(text(), "175")]')
+    }
+    get option200 () {
+      return $('//option[contains(text(), "200")]')
+    }
+    get option225 () {
+      return $('//option[contains(text(), "225")]')
+    }
+    get option250 () {
+      return $('//option[contains(text(), "250")]')
+    }
+    get option275 () {
+      return $('//option[contains(text(), "275")]')
+    }
+    get option300 () {
+      return $('//option[contains(text(), "300")]')
+    }
 
+    // Array of options
+  options = [
+  this.option50,
+  this.option75,
+  this.option100,
+  this.option125,
+  this.option150,
+  this.option175,
+  this.option200,
+  this.option225,
+  this.option250,
+  this.option275,
+  this.option300,
+  this.option25
+];
     async giftTest () {
         await this.open();
        
@@ -83,8 +131,10 @@ class GiftCertificates extends Base {
         await browser.switchToParentFrame();
         await browser.switchFrame(this.iframe)
         await expect(this.errormsg).toBeExisting();
-        await this.ValueDD.click();
-        // await this.option125.click();
+        for (const option of options) {
+          await this.ValueDD.click(); // Click the dropdown
+          await option.click();       // Select the current option
+      }
         await expect(this.inputUserName).toBeExisting();
         // Selector for the input field
         const inputNameField = await this.inputUserName;
@@ -105,9 +155,9 @@ class GiftCertificates extends Base {
             }
             return result;
         }
-        function getRandomEmail() {
-          const baseCharacters = 'abcdefghijklmnopqrstuvwxyz';
-          const specialCharacters = '0123456789';
+        function getRandomEmail(localLength, domainLength, tldLength) {
+          const baseCharacters1 = 'abcdefghijklmnopqrstuvwxyz';
+          const specialCharacters1 = '0123456789';
       
           // Helper to generate a random string from a given character set
           const getRandomFromSet = (length, charSet) => {
@@ -120,9 +170,9 @@ class GiftCertificates extends Base {
           };
       
           // Generate email parts
-          const localPart = getRandomFromSet(2, baseCharacters + specialCharacters); // 2 characters before @
-          const domainPart = getRandomFromSet(2, baseCharacters); // At least 2 characters for domain
-          const tld = getRandomFromSet(2, baseCharacters); // 2 characters for TLD
+          const localPart = getRandomFromSet(localLength, baseCharacters1 + specialCharacters1); // characters before @
+          const domainPart = getRandomFromSet(domainLength, baseCharacters1); // characters for domain
+          const tld = getRandomFromSet(tldLength, baseCharacters1); // 2 characters for TLD
       
           // Combine parts to form the email
           return `${localPart}@${domainPart}.${tld}`;
@@ -174,35 +224,47 @@ class GiftCertificates extends Base {
             }
           
         }
+
+        await inputNameField.setValue('t');
+        const inputEmailField = await this.inputEmailAddress;
+        // Clear the input field
+        await inputEmailField.clearValue(); // Ensure it's blank
+        function isValidEmailFormat(inputEmailField) {
+          const emailRegex = /^[a-zA-Z0-9]{2,}@[a-zA-Z]{2,}\.[a-zA-Z]{2,}$/;
+          return emailRegex.test(inputEmailField);
+      }
         for (let i = 1; i <= 20; i++) {
-          // Generate a random email
-          const valueToEnter = getRandomEmail();
-      
-          // Clear the input field
-          await inputNameField.setValue(''); // Ensure it's blank
+          // Generate a random email Start with 0 characters for each part and increment by 1 for each iteration 
+
+          const valueToEnterEmail = getRandomEmail(0 + i, 0 + i, 0 + Math.floor(i / 2));
+          console.log(`Iteration ${i}: ${valueToEnterEmail}`);
+          const emailCheck = isValidEmailFormat(valueToEnterEmail);
       
           // Enter the new value
-          await inputNameField.setValue(valueToEnter);
-      
+          await inputEmailField.setValue(valueToEnterEmail);
+          
           // Wait for the error message to display
           await errorMessage.waitForDisplayed({ timeout: 5000 });
-          const displayedMessage = await errorMessage.getText();
+          const displayedMessage1 = await errorMessage.getText();
       
           // Determine if the input is valid
-          if (isValidInput(valueToEnter)) {
+          if (emailCheck) {
               // Validate the expected message for valid input
-              expect(displayedMessage).toBe('Please enter a valid email.');
-              console.log(`Iteration ${i}: '${valueToEnter}' is valid. Message: '${displayedMessage}'`);
+              expect(displayedMessage1).toBe('You must fill out your name!');
+              console.log(`Iteration ${i}: '${valueToEnterEmail}' is valid. Message: '${displayedMessage1}'`);
           } else {
               // Validate the expected message for invalid input
-              expect(displayedMessage).toBe('Please enter a valid name and email.');
-              console.log(`Iteration ${i}: '${valueToEnter}' is invalid. Message: '${displayedMessage}'`);
+              expect(displayedMessage1).toBe('Please enter a valid name and email.');
+              console.log(`Iteration ${i}: '${valueToEnterEmail}' is invalid. Message: '${displayedMessage1}'`);
           }
       }
       
 
         // await this.inputUserName.setValue('Travis');
+        await this.inputUserName.setValue('Travis')
         await this.inputEmailAddress.setValue('tdogging@hotmail.com');
+
+
         await browser.switchToParentFrame();
         // await switch to child iframe
         await browser.switchFrame(this.iframe)
@@ -251,21 +313,6 @@ class GiftCertificates extends Base {
         await browser.switchToParentFrame();
         await browser.switchToParentFrame();
 
-      //   await browser.waitUntil(async () => {
-      //     const url = await browser.getUrl();
-      //     return url.includes('paypal');
-      // }, {
-      //     timeout: 5000, // Timeout in milliseconds
-      //     timeoutMsg: 'URL did not contain the expected text within the timeout'
-      // });
-
-        // await expect(this.errormsg).toBeExisting();
-
-        // await this.PassCreds('Travis', 'tdogging@hotmail.com');
-
-        
-
-        await browser.pause(2000);
       }
 
     
