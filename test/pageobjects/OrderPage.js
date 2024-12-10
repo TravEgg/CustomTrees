@@ -160,20 +160,6 @@ class OrderPage extends Base {
         await this.ordertohomePage.click();
         
         await this.orderDropDown.moveTo();
-        await expect(this.orderOption).toBeExisting();
-        await this.orderOption.click();
-        await browser.waitUntil(
-            async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/order-a-tree',
-            {
-              timeout: 5000, // Timeout in milliseconds
-              timeoutMsg: 'URL did not match the expected value within 5 seconds',
-            }
-          );
-        await this.designChoice.moveTo();
-        await this.clickDesign();
-        await this.ancestorOption.click();
-        await this.ordertohomePage.click();
-        await this.orderDropDown.moveTo();
         await this.giftOption.click();
         await expect(this.giftCertificateLink).toBeExisting();
         await this.homePage.click();
@@ -181,9 +167,6 @@ class OrderPage extends Base {
         await this.updateOption.click();
         await expect(this.updatePage).toBeExisting();
         await this.homePage.click();
-        await this.treesDropDown.moveTo();
-        await this.treesDropDown.click();
-        await this.ancestryTrees.click();
     }
 }
 

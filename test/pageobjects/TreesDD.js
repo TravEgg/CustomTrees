@@ -57,18 +57,6 @@ class TreesDD extends Base {
     { element: () => this.gallery, url: 'https://customfamilytreeart.com/gallery' },
     ];
     
-
-    // async initialBgColor() {
-    //     const bgColor = await this.descendantsOption.getCSSProperty('background-color');
-    //     return bgColor.value;
-    // }
-
-    // async hoverBgColor() {
-    //     const bgColor = this.descendantsOption.getCSSProperty('background-color')
-    //     return bgColor.value;
-    // }
-
-
     /**
      * a method to encapsule automation code to interact with the page
      */
@@ -91,7 +79,7 @@ class TreesDD extends Base {
                 }
             );
   
-    // Optionally, navigate back to the home page after each interaction
+    // Navigate back to the home page after each interaction
             if (this.homePage) {
                 await this.homePage.click();
             }

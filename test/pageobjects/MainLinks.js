@@ -44,9 +44,7 @@ class MainPage extends Base {
 
     async mainLinksTest () {
         await this.CustomTreeMain();
-
-        // await this.howItWorks.moveTo();
-        // await this.howItWorks.click();
+        // Open Main Page
         await browser.waitUntil(
             async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/',
             {
@@ -55,10 +53,8 @@ class MainPage extends Base {
             }
           );
         
-
+        //Loop through the Info Links and check that the page opens
         for (const link of this.infoLinks) {
-            // Move to the dropdown menu
-                    // await link.element().moveTo();
           
             // Click the current menu option
                     await link.element().click();
