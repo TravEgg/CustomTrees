@@ -44,7 +44,6 @@ class MainPage extends Base {
 
     async mainLinksTest () {
         await this.open();
-        await browser.pause(10000);
 
         // await this.howItWorks.moveTo();
         // await this.howItWorks.click();

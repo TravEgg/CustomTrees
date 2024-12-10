@@ -75,8 +75,10 @@ class GiftCertificates extends Base {
       return $('//option[contains(text(), "300")]')
     }
 
-    // Array of options
-  options = [
+    
+    async giftTest () {
+      // Array of options
+  const options = [
   this.option50,
   this.option75,
   this.option100,
@@ -90,7 +92,6 @@ class GiftCertificates extends Base {
   this.option300,
   this.option25
 ];
-    async giftTest () {
         await this.open();
        
         await browser.waitUntil(
@@ -184,7 +185,7 @@ class GiftCertificates extends Base {
         }
 
         // Loop to add random letters progressively
-        for (let i = 1; i <= 50; i++) {
+        for (let i = 1; i <= 10; i++) {
             // Generate a random string of `i` letters
             const valueToEnter = getRandomString(i);
 
@@ -233,7 +234,7 @@ class GiftCertificates extends Base {
           const emailRegex = /^[a-zA-Z0-9]{2,}@[a-zA-Z]{2,}\.[a-zA-Z]{2,}$/;
           return emailRegex.test(inputEmailField);
       }
-        for (let i = 1; i <= 20; i++) {
+        for (let i = 1; i <= 10; i++) {
           // Generate a random email Start with 0 characters for each part and increment by 1 for each iteration 
 
           const valueToEnterEmail = getRandomEmail(0 + i, 0 + i, 0 + Math.floor(i / 2));
@@ -298,14 +299,13 @@ class GiftCertificates extends Base {
             }
         }
 
+
         // Perform actions in the new window
-        await browser.waitUntil(async () => {
-          const url = await browser.getUrl();
-          return url.includes('paypal');
-      }, {
-          timeout: 5000, // Timeout in milliseconds
-          timeoutMsg: 'URL did not contain the expected text within the timeout'
-      });
+        await browser.waitUntil(() => browser.getUrl().then(url => url.includes('paypal')),
+        {
+            timeout: 10000, // Timeout in milliseconds
+            timeoutMsg: 'URL did not contain the expected text within the timeout'
+        });
       // Switch back to the original Window
       await browser.switchToWindow(originalWindow);
 

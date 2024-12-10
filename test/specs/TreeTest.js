@@ -24,6 +24,9 @@ import GiftCertificates from '../pageobjects/GiftCertificates.js'
 // })
 
 describe('Gift Certicate Link ', () => {
+    it('should open corresponding pages', async () => {
+        await MainLinks.mainLinksTest();
+    })
     it('should open gift certificate page', async () => {
         await GiftCertificates.giftTest();
     })

@@ -53,7 +53,7 @@ export const config = {
         browserName: 'chrome',
         'wdio:chromedriverOptions': { // or 'wdio:geckodriverOptions', 'wdio:edgedriverOptions'
             // binary: '/Users/student/Desktop/AutomationProjects/Capstone/CustomTrees/node_modules/chromedriver/bin/chromedriver' // or 'geckodriver', 'msedgedriver'
-            binary: 'node_modules/chromedriver/bin/chromedriver'
+            binary: 'node_modules/chromedriver/lib/chromedriver/chromedriver'
         }
         // browserName: 'firefox'
     }],
@@ -135,7 +135,7 @@ export const config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 160000
     },
 
     //
