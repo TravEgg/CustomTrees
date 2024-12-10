@@ -92,7 +92,7 @@ class GiftCertificates extends Base {
   this.option300,
   this.option25
 ];
-        await this.open();
+        await this.CustomTreeMain();
        
         await browser.waitUntil(
             async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/',

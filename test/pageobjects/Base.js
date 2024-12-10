@@ -8,7 +8,7 @@ export default class Base {
     /**
     * Opens the base login page
     */
-    open () {
+    CustomTreeMain () {
         return browser.url('http://CustomFamilyTreeArt.com')
     }
 }

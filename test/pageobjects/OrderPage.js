@@ -49,121 +49,117 @@ class OrderPage extends Base {
     get ordertohomePage() {
         return $('//a[contains(text(), "HOME")]')
     }
+    get orderATree() {
+        return $('#id1605371070800')
+    }
     
     get homePage() {
         return $('//span[contains(text(), "HOME")]')
     }
-
+    get updatePage() {
+        return $('//span[contains(text(), "Updates")]')
+    }
+    get giftCertificateLink() {
+        return $('a[href="https://customfamilytreeart.com/gift-certificates"]');
+    }
     async clickDesign() {
-        if (await (this.designChoice).isExisting()) {
+        if (await this.designChoice.isExisting()) {
             await this.designChoice.click();
+        } else if (await this.orderATree.isExisting()) {
+            await this.orderATree.click();
+        } else {
+            console.log("Neither designChoice nor orderATree exists.");
         }
     }
+    
     
     get ancestryTrees() {
         return $('//div[contains(text(), "Ancestry")]')
     }
 
-    // async initialBgColor() {
-    //     const bgColor = await this.descendantsOption.getCSSProperty('background-color');
-    //     return bgColor.value;
-    // }
+    async initialBgColor() {
+        const bgColorInitial = await this.descendantsOption.getCSSProperty('background-color');
+        return bgColorInitial.value;
+    }
 
-    // async hoverBgColor() {
-    //     const bgColor = this.descendantsOption.getCSSProperty('background-color')
-    //     return bgColor.value;
-    // }
-
-    
-
-    // usernames = ['standard_user', 'locked_out_user', 'problem_user', 'performance_glitch_user', 'error_user', 'visual_user'];
+    async hoverBgColor() {
+        const bgColorHover = this.descendantsOption.getCSSProperty('background-color')
+        return bgColorHover.value;
+    }
 
 
     /**
      * a method to encapsule automation code to interact with the page
-     * e.g. to login using corect username and password and then again with a bad password
      */
     async ordertest () {
-        await this.open();
-        //await expect(this.treePage).toBeExisting();
+        await this.CustomTreeMain();
+        // expect drop down and click to open Order page
         await expect(this.orderDropDown).toBeExisting();
-        await this.orderDropDown.click();
+        // await this.orderDropDown.click();
+        await this.orderDropDown.moveTo();
         await  expect(this.orderOption).toBeExisting();
         await this.orderOption.click();
+        await browser.waitUntil(
+            async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/order-a-tree',
+            {
+              timeout: 5000, // Timeout in milliseconds
+              timeoutMsg: 'URL did not match the expected value within 5 seconds',
+            }
+          );
+        await this.designChoice.moveTo();
         await this.clickDesign();
         await expect(this.ancestorOption).toBeExisting();
-        await this.descendantsOption.moveTo();
-        //await expect(this.hoverBgColor.value).not.ToBe(this.initialBgColor.value);
+        // await this.descendantsOption.moveTo();
+        // Store the initial background color
+        const initialBgColor = await this.descendantsOption.getCSSProperty('background-color');
+
+        // Perform hover action
+        await this.descendantsOption.moveTo(); 
+        // Store the hover background color
+        const hoverBgColor = await this.descendantsOption.getCSSProperty('background-color');
+
+        // Assert that the colors are not the same
+        await expect(hoverBgColor.value).not.toBe(initialBgColor.value);
+
         await this.descendantsOption.click();
+        const clickBgColor = await this.descendantsOption.getCSSProperty('background-color');
+        await expect(clickBgColor.value).not.toBe(hoverBgColor.value);
+
         await this.ordertohomePage.click();
-        await this.orderDropDown.click();
+        // await this.orderDropDown.click();
+        // await browser.waitUntil(
+        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/order',
+        //     {
+        //       timeout: 5000, // Timeout in milliseconds
+        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
+        //     }
+        //   );
+        await this.orderDropDown.moveTo();
         await expect(this.orderOption).toBeExisting();
         await this.orderOption.click();
+        await browser.waitUntil(
+            async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/order-a-tree',
+            {
+              timeout: 5000, // Timeout in milliseconds
+              timeoutMsg: 'URL did not match the expected value within 5 seconds',
+            }
+          );
+        await this.designChoice.moveTo();
         await this.clickDesign();
         await this.ancestorOption.click();
         await this.ordertohomePage.click();
-        await this.orderDropDown.click();
+        await this.orderDropDown.moveTo();
         await this.giftOption.click();
+        await expect(this.giftCertificateLink).toBeExisting();
         await this.homePage.click();
-        await this.orderDropDown.click();
+        await this.orderDropDown.moveTo();
         await this.updateOption.click();
+        await expect(this.updatePage).toBeExisting();
+        await this.homePage.click();
         await this.treesDropDown.moveTo();
         await this.treesDropDown.click();
         await this.ancestryTrees.click();
-
-
     }
-
- 
-//         await this.inputPassword.setValue(password);
-//         await this.btnSubmit.click();
-//     }
-
-//     async badLogin (username, badPassword) {
-//         await this.inputUsername.setValue(username);
-//         await this.inputPassword.setValue(badPassword);
-//         await this.btnSubmit.click();
-//     }
-// //Positive Loop for all user logins 
-//     async loginLoop (password) {
-//         for (let i = 0; i < this.usernames.length; i++){
-//         await this.open()
-//         await this.login(this.usernames[i], password);
-//             if (this.usernames[i]=='locked_out_user') {
-//             await expect(securePage.errorPopup).toBeExisting()
-//             await expect(securePage.errorPopup).toHaveText(
-//             expect.stringContaining('Epic sadface: Sorry, this user has been locked out'))
-//         }
-//             else {
-//             await expect(securePage.productPage).toBeExisting()
-//             await expect(securePage.productPage).toHaveText(
-//             expect.stringContaining('Swag Labs'))
-//         }
-//     }
-// }
-// //Negative Loop for all user logins using a bad password
-//     async badLoginLoop (password) {
-//         for (let i = 0; i < this.usernames.length; i++){
-//         await securePage.open()
-//         await this.badLogin(this.usernames[i], password);
-//         await expect(securePage.errorPopup).toBeExisting()
-//         await expect(securePage.errorPopup).toHaveText(
-//             expect.stringContaining('Epic sadface: Username and password do not match any user in this service'))
-//     }
-// }
-// dynamic selectors
-// async MenuLinks (linkoption) {
-//     return $(`[href="http://customfamilytreeart.com/${linkoption}"]`)
-// }        
-// await this.MenuLinks('prints').click();
-// await this.MenuLinks('forms').click()
- 
-    /**
-     * overwrite specific options to adapt it to page object
-     */
-    // open () {
-    //     return super.open();
-    // }
 }
 
 export default new OrderPage();

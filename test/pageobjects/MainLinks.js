@@ -5,11 +5,11 @@ import TreesDD from './TreesDD.js';
 
 
 /**
- * sub page containing specific selectors and methods for a specific page
+ * Links on Main page 
  */
 class MainPage extends Base {
     /**
-     * define selectors using getter methods
+     * Selectors 
      */
     get howItWorks () {
         return $('//span[contains(text(), "How It Works")]')
@@ -43,7 +43,7 @@ class MainPage extends Base {
         ];
 
     async mainLinksTest () {
-        await this.open();
+        await this.CustomTreeMain();
 
         // await this.howItWorks.moveTo();
         // await this.howItWorks.click();
@@ -54,48 +54,7 @@ class MainPage extends Base {
               timeoutMsg: 'URL did not match the expected value within 5 seconds',
             }
           );
-        // await browser.pause(2000);
-        // await TreesDD.homePage.click();
-        // await this.nameForms.moveTo();
-        // await this.nameForms.click();
-        // await browser.waitUntil(
-        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/name-forms',
-        //     {
-        //       timeout: 5000, // Timeout in milliseconds
-        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
-        //     }
-        //   );
-        //   await TreesDD.homePage.click();
-        //   await this.prices.moveTo();
-        //   await this.prices.click();
-        //   await browser.waitUntil(
-        //       async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/prices',
-        //       {
-        //         timeout: 5000, // Timeout in milliseconds
-        //         timeoutMsg: 'URL did not match the expected value within 5 seconds',
-        //       }
-        //     );
-        //     await TreesDD.homePage.click();
-        //     await this.shipping.moveTo();
-        //     await this.shipping.click();
-        //     await browser.waitUntil(
-        //         async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/shipping',
-        //         {
-        //           timeout: 5000, // Timeout in milliseconds
-        //           timeoutMsg: 'URL did not match the expected value within 5 seconds',
-        //         }
-        //       );
-        //       await TreesDD.homePage.click();
-        // await this.privacyPolicy.moveTo();
-        // await this.privacyPolicy.click();
-        // await browser.waitUntil(
-        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/privacy-policy',
-        //     {
-        //       timeout: 5000, // Timeout in milliseconds
-        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
-        //     }
-        //   );
-        // await browser.pause(2000);
+        
 
         for (const link of this.infoLinks) {
             // Move to the dropdown menu
@@ -112,7 +71,6 @@ class MainPage extends Base {
                             timeoutMsg: `URL did not match the expected value for ${link.url} within 5 seconds`,
                         }
                     );
-                    await browser.pause(1000);
           
             // Optionally, navigate back to the home page after each interaction
                     if (this.homePage) {
