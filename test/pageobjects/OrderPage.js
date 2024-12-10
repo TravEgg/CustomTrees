@@ -42,6 +42,12 @@ class OrderPage extends Base {
     get ancestorOption () {
         return $('#imgOption-0')
     }
+    get ancestorRootsOption () {
+        return $('#imgOption-2')
+    }
+    get descendantRootsOption () {
+        return $('#imgOption-3')
+    }
     get treePage () {
         return $('a[href="https://customfamilyrtreeart.com"]')
     }
@@ -109,7 +115,8 @@ class OrderPage extends Base {
         await this.designChoice.moveTo();
         await this.clickDesign();
         await expect(this.ancestorOption).toBeExisting();
-        // await this.descendantsOption.moveTo();
+        await this.descendantRootsOption.moveTo();
+    
         // Store the initial background color
         const initialBgColor = await this.descendantsOption.getCSSProperty('background-color');
 
@@ -124,16 +131,34 @@ class OrderPage extends Base {
         await this.descendantsOption.click();
         const clickBgColor = await this.descendantsOption.getCSSProperty('background-color');
         await expect(clickBgColor.value).not.toBe(hoverBgColor.value);
-
+        await console.log(clickBgColor);
+        // repeat check for ancestor option 
+        const ancestorInitialColor = await this.ancestorOption.getCSSProperty('background-color');
+        await this.ancestorOption.moveTo();
+        const ancestorBgColor = await this.ancestorOption.getCSSProperty('background-color');
+        await expect(ancestorBgColor.value).not.toBe(ancestorInitialColor.value);
+        await this.ancestorOption.click();
+        const clickAncestorColor = await this.ancestorOption.getCSSProperty('background-color');
+        await expect(clickAncestorColor.value).not.toBe(ancestorBgColor.value);
+        // Repeat for Ancestor Roots
+        const ancestorRootsInitialColor = await this.ancestorRootsOption.getCSSProperty('background-color');
+        await this.ancestorRootsOption.moveTo();
+        const ancestorRootColor = await this.ancestorRootsOption.getCSSProperty('background-color');
+        await expect(ancestorRootColor.value).not.toBe(ancestorRootsInitialColor.value);
+        await this.ancestorRootsOption.click();
+        const clickAncestorRootColor = await this.ancestorRootsOption.getCSSProperty('background-color');
+        await expect(clickAncestorRootColor.value).not.toBe(ancestorRootColor.value);
+        // Repeat for Descendant Roots
+        const DescendantRootsInitialColor = await this.descendantRootsOption.getCSSProperty('background-color');
+        await this.descendantRootsOption.moveTo();
+        const descendantRootColor = await this.descendantRootsOption.getCSSProperty('background-color');
+        await expect(descendantRootColor.value).not.toBe(DescendantRootsInitialColor.value);
+        await this.descendantRootsOption.click();
+        const clickDescendantRootColor = await this.descendantRootsOption.getCSSProperty('background-color');
+        await expect(clickDescendantRootColor.value).not.toBe(descendantRootColor.value);
+        //return to the Home Page
         await this.ordertohomePage.click();
-        // await this.orderDropDown.click();
-        // await browser.waitUntil(
-        //     async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/order',
-        //     {
-        //       timeout: 5000, // Timeout in milliseconds
-        //       timeoutMsg: 'URL did not match the expected value within 5 seconds',
-        //     }
-        //   );
+        
         await this.orderDropDown.moveTo();
         await expect(this.orderOption).toBeExisting();
         await this.orderOption.click();
