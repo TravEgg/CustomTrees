@@ -19,7 +19,6 @@ class OrderPage extends Base {
     }
 
     get orderOption () {
-        // return $('.page-item.simple.state-displayed.items-list-item.items-list-weak2814.state-filtered.last-item');
         return $('//div[contains(text(), "Order a Tree")]')
     }
 
@@ -47,6 +46,12 @@ class OrderPage extends Base {
     }
     get descendantRootsOption () {
         return $('#imgOption-3')
+    }
+    get nextButton () {
+        return $('#next')
+    }
+    get backButton () {
+        return $('#back')
     }
     get treePage () {
         return $('a[href="https://customfamilyrtreeart.com"]')
@@ -78,6 +83,9 @@ class OrderPage extends Base {
         }
     }
     
+    get optionTitle () {
+        return $('#optionTitle')
+    }
     
     get ancestryTrees() {
         return $('//div[contains(text(), "Ancestry")]')
@@ -101,64 +109,64 @@ class OrderPage extends Base {
         await this.CustomTreeMain();
         // expect drop down and click to open Order page
         await expect(this.orderDropDown).toBeExisting();
-        // await this.orderDropDown.click();
         await this.orderDropDown.moveTo();
         await  expect(this.orderOption).toBeExisting();
         await this.orderOption.click();
         await browser.waitUntil(
             async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/order-a-tree',
             {
-              timeout: 5000, // Timeout in milliseconds
+              timeout: 5000,
               timeoutMsg: 'URL did not match the expected value within 5 seconds',
             }
           );
+          //Check if it opens to page with Choose Design before going to the Order page
         await this.designChoice.moveTo();
         await this.clickDesign();
         await expect(this.ancestorOption).toBeExisting();
+        //Move focus before starting the test loop
         await this.descendantRootsOption.moveTo();
+        //Set option names and elements for the Loop
+        const options = [
+            { name: 'Descendants', element: this.descendantsOption, },
+            { name: 'Ancestor', element: this.ancestorOption, },
+            { name: 'Ancestor Roots', element: this.ancestorRootsOption, },
+            { name: 'Descendant Roots', element: this.descendantRootsOption, }
+        ];
+        //Loop to check the colors of background as each option is highlighted and clicked
+        for (const option of options) {
+            console.log(`Checking option: ${option.name}`);
     
-        // Store the initial background color
-        const initialBgColor = await this.descendantsOption.getCSSProperty('background-color');
+            // Store the initial background color
+            const initialBgColor = await option.element.getCSSProperty('background-color');
+    
+            // Perform hover action and get hover background color
+            await option.element.moveTo();
+            const hoverBgColor = await option.element.getCSSProperty('background-color');
+    
+            // Assert that the hover color is different from the initial color
+            await expect(hoverBgColor.value).not.toBe(initialBgColor.value);
+    
+            // Click the element and get the background color after clicking
+            await option.element.click();
+            const clickBgColor = await option.element.getCSSProperty('background-color');
+    
+            // Assert that the clicked color is different from the hover color
+            await expect(clickBgColor.value).not.toBe(hoverBgColor.value);
+            console.log(`${option.name} clicked color: ${clickBgColor.value}`);
+    
+            // Navigate to the next and back buttons
+            await this.nextButton.click();
+            await this.ordertohomePage.moveTo();
+            // Verify that the correct page is displayed
+            await expect(this.optionTitle).toBeDisplayed();
+            console.log(`${option.name} next page is displayed correctly.`);
+            // go back to the main order page
+            await this.backButton.click();
+        }
 
-        // Perform hover action
-        await this.descendantsOption.moveTo(); 
-        // Store the hover background color
-        const hoverBgColor = await this.descendantsOption.getCSSProperty('background-color');
-
-        // Assert that the colors are not the same
-        await expect(hoverBgColor.value).not.toBe(initialBgColor.value);
-
-        await this.descendantsOption.click();
-        const clickBgColor = await this.descendantsOption.getCSSProperty('background-color');
-        await expect(clickBgColor.value).not.toBe(hoverBgColor.value);
-        await console.log(clickBgColor);
-        // repeat check for ancestor option 
-        const ancestorInitialColor = await this.ancestorOption.getCSSProperty('background-color');
-        await this.ancestorOption.moveTo();
-        const ancestorBgColor = await this.ancestorOption.getCSSProperty('background-color');
-        await expect(ancestorBgColor.value).not.toBe(ancestorInitialColor.value);
-        await this.ancestorOption.click();
-        const clickAncestorColor = await this.ancestorOption.getCSSProperty('background-color');
-        await expect(clickAncestorColor.value).not.toBe(ancestorBgColor.value);
-        // Repeat for Ancestor Roots
-        const ancestorRootsInitialColor = await this.ancestorRootsOption.getCSSProperty('background-color');
-        await this.ancestorRootsOption.moveTo();
-        const ancestorRootColor = await this.ancestorRootsOption.getCSSProperty('background-color');
-        await expect(ancestorRootColor.value).not.toBe(ancestorRootsInitialColor.value);
-        await this.ancestorRootsOption.click();
-        const clickAncestorRootColor = await this.ancestorRootsOption.getCSSProperty('background-color');
-        await expect(clickAncestorRootColor.value).not.toBe(ancestorRootColor.value);
-        // Repeat for Descendant Roots
-        const DescendantRootsInitialColor = await this.descendantRootsOption.getCSSProperty('background-color');
-        await this.descendantRootsOption.moveTo();
-        const descendantRootColor = await this.descendantRootsOption.getCSSProperty('background-color');
-        await expect(descendantRootColor.value).not.toBe(DescendantRootsInitialColor.value);
-        await this.descendantRootsOption.click();
-        const clickDescendantRootColor = await this.descendantRootsOption.getCSSProperty('background-color');
-        await expect(clickDescendantRootColor.value).not.toBe(descendantRootColor.value);
         //return to the Home Page
         await this.ordertohomePage.click();
-        
+        //Check other links in order drop down
         await this.orderDropDown.moveTo();
         await this.giftOption.click();
         await expect(this.giftCertificateLink).toBeExisting();
