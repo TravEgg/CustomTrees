@@ -1,4 +1,6 @@
 import { browser } from '@wdio/globals'
+import { $ } from '@wdio/globals'
+import { expect } from '@wdio/globals'
 
 /**
 * main page object containing all methods, selectors and functionality

@@ -1,8 +1,5 @@
-import { $ } from '@wdio/globals'
 import Base from './Base.js';
-import {browser} from '@wdio/globals';
 import TreesDD from './TreesDD.js';
-
 
 /**
  * Links on Main page 

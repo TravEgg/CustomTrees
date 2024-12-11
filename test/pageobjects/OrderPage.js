@@ -1,7 +1,4 @@
-import { $ } from '@wdio/globals'
 import Base from './Base.js';
-import { expect } from '@wdio/globals'
-import {browser} from '@wdio/globals'
 
 /**
  * sub page containing specific selectors and methods for a specific page

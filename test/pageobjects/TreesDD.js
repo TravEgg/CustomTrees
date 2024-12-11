@@ -1,9 +1,5 @@
-import { $ } from '@wdio/globals'
 import Base from './Base.js';
-import { expect } from '@wdio/globals'
 import MainLinks from './MainLinks.js';
-import {browser} from '@wdio/globals'
-
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -57,17 +53,13 @@ class TreesDD extends Base {
     { element: () => this.gallery, url: 'https://customfamilytreeart.com/gallery' },
     ];
     
-    /**
-     * a method to encapsule automation code to interact with the page
-     */
+    // Test to run through the Trees drop down menu
     async treesddtest () {
         await this.CustomTreeMain();
     // Define an array of menu options and their expected URLs
         for (const option of this.menuOptions) {
     // Move to the dropdown menu
             await this.treesDropDown.moveTo();
-  
-    // Click the current menu option
             await option.element().click();
   
     // Wait for the URL to match the expected value
