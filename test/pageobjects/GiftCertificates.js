@@ -179,11 +179,28 @@ class GiftCertificates extends Base {
       
         // function setting what is considered valid
         function isValidInput(input) {
-          return input.length >= 2 && input.length <= 100;
-        }
+          // Define special characters
+          const specialCharacters = /[!@#$%^&*(),.?":{}|<>]/;
+      
+          // Check the length requirement
+          if (input.length < 2 || input.length > 100) {
+              return false;
+          }
+      
+          // Check if the first two characters are special characters
+          const firstTwoSpecial = specialCharacters.test(input[0]) && specialCharacters.test(input[1]);
+          
+          // Check if two of the first three characters are special characters
+          const firstThree = input.slice(0, 3);
+          const specialCount = [...firstThree].filter(char => specialCharacters.test(char)).length;
+      
+          // Return false if either condition is true, otherwise true
+          return !(firstTwoSpecial || specialCount >= 2);
+      }
+      
 
         // Loop to add random letters progressively
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 0; i <= 10; i++) {
             // Generate a random string of `i` letters
             const valueToEnter = getRandomString(i);
 
@@ -232,7 +249,7 @@ class GiftCertificates extends Base {
           const emailRegex = /^[a-zA-Z0-9]{2,}@[a-zA-Z]{2,}\.[a-zA-Z]{2,}$/;
           return emailRegex.test(inputEmailField);
       }
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 0; i <= 10; i++) {
           // Generate a random email Start with 0 characters for each part and increment by 1 for each iteration 
 
           const valueToEnterEmail = getRandomEmail(0 + i, 0 + i, 0 + Math.floor(i / 2));
