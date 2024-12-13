@@ -1,4 +1,3 @@
-import { expect } from '@wdio/globals'
 import OrderPage from '../pageobjects/OrderPage.js'
 import TreesDD from '../pageobjects/TreesDD.js'
 import MainLinks from '../pageobjects/MainLinks.js'

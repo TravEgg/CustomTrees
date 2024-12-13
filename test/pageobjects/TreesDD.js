@@ -1,13 +1,7 @@
 import Base from './Base.js';
 import MainLinks from './MainLinks.js';
 
-/**
- * sub page containing specific selectors and methods for a specific page
- */
 class TreesDD extends Base {
-    /**
-     * define selectors using getter methods
-     */
 
     get treesDropDown() {
         return $('//span[contains(text(), "TREES")]');
@@ -53,25 +47,20 @@ class TreesDD extends Base {
     { element: () => this.gallery, url: 'https://customfamilytreeart.com/gallery' },
     ];
     
-    // Test to run through the Trees drop down menu
     async treesddtest () {
         await this.CustomTreeMain();
-    // Define an array of menu options and their expected URLs
         for (const option of this.menuOptions) {
-    // Move to the dropdown menu
             await this.treesDropDown.moveTo();
             await option.element().click();
   
-    // Wait for the URL to match the expected value
             await browser.waitUntil(
                 async () => (await browser.getUrl()) === option.url,
                 {
-                    timeout: 5000, // Timeout in milliseconds
+                    timeout: 5000,
                     timeoutMsg: `URL did not match the expected value for ${option.url} within 5 seconds`,
                 }
             );
   
-    // Navigate back to the home page after each interaction
             if (this.homePage) {
                 await this.homePage.click();
             }
@@ -82,11 +71,6 @@ class TreesDD extends Base {
         await expect(this.ancestryTrees).not.toBeExisting();
     }
   
-        
- 
-    /**
-     * overwrite specific options to adapt it to page object
-     */
     CustomTreeMain () {
         return super.CustomTreeMain();
     }

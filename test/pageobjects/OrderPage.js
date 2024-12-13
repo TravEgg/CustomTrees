@@ -98,10 +98,6 @@ class OrderPage extends Base {
         return bgColorHover.value;
     }
 
-
-    /**
-     * a method to encapsule automation code to interact with the page
-     */
     async ordertest () {
         await this.CustomTreeMain();
         // expect drop down and click to open Order page

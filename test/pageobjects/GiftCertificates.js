@@ -36,60 +36,65 @@ class GiftCertificates extends Base {
     get iframePP () {
       return $('iframe.component-frame.visible')
     }
-    get option25 () {
-      return $('//option[contains(text(), "25")]')
+    // get option25 () {
+    //   return $('//option[contains(text(), "25")]')
+    // }
+    // get option50 () {
+    //   return $('//option[contains(text(), "50")]')
+    // }
+    // get option75 () {
+    //   return $('//option[contains(text(), "75")]')
+    // }
+    // get option100 () {
+    //   return $('//option[contains(text(), "100")]')
+    // }
+    // get option125 () {
+    //   return $('//option[contains(text(), "125")]')
+    // }
+    // get option150 () {
+    //   return $('//option[contains(text(), "150")]')
+    // }
+    // get option175 () {
+    //   return $('//option[contains(text(), "175")]')
+    // }
+    // get option200 () {
+    //   return $('//option[contains(text(), "200")]')
+    // }
+    // get option225 () {
+    //   return $('//option[contains(text(), "225")]')
+    // }
+    // get option250 () {
+    //   return $('//option[contains(text(), "250")]')
+    // }
+    // get option275 () {
+    //   return $('//option[contains(text(), "275")]')
+    // }
+    // get option300 () {
+    //   return $('//option[contains(text(), "300")]')
+    // }
+    dropDownValues = ['50', '75', '100', '125', '150', '175', '200', '225', '250', '275', '300']
+    dropDownOption(value) {
+      return $(`//option[contains(text(), "${value}")]`);
     }
-    get option50 () {
-      return $('//option[contains(text(), "50")]')
+    //Method for running through all the options
+    async selectOptions() {
+      for (const value of this.dropDownValues) {
+        // Click the dropdown to open it
+        await this.ValueDD.click(); 
+  
+        // Get the option element for the current value
+        const option = await this.dropDownOption(value);
+  
+        // Click the current option
+        if (await option.isDisplayed()) {
+          await option.click();
+        } else {
+          console.error(`Option ${value} is not displayed.`);
+        }
+      }
     }
-    get option75 () {
-      return $('//option[contains(text(), "75")]')
-    }
-    get option100 () {
-      return $('//option[contains(text(), "100")]')
-    }
-    get option125 () {
-      return $('//option[contains(text(), "125")]')
-    }
-    get option150 () {
-      return $('//option[contains(text(), "150")]')
-    }
-    get option175 () {
-      return $('//option[contains(text(), "175")]')
-    }
-    get option200 () {
-      return $('//option[contains(text(), "200")]')
-    }
-    get option225 () {
-      return $('//option[contains(text(), "225")]')
-    }
-    get option250 () {
-      return $('//option[contains(text(), "250")]')
-    }
-    get option275 () {
-      return $('//option[contains(text(), "275")]')
-    }
-    get option300 () {
-      return $('//option[contains(text(), "300")]')
-    }
-
     
     async giftTest () {
-      // Array of options
-  const options = [
-  this.option50,
-  this.option75,
-  this.option100,
-  this.option125,
-  this.option150,
-  this.option175,
-  this.option200,
-  this.option225,
-  this.option250,
-  this.option275,
-  this.option300,
-  this.option25
-];
         await this.CustomTreeMain();
        
         await browser.waitUntil(
@@ -130,10 +135,9 @@ class GiftCertificates extends Base {
         await browser.switchToParentFrame();
         await browser.switchFrame(this.iframe)
         await expect(this.errormsg).toBeExisting();
-        for (const option of options) {
-          await this.ValueDD.click(); // Click the dropdown
-          await option.click();       // Select the current option
-      }
+        await this.selectOptions();
+
+        //Username section
         await expect(this.inputUserName).toBeExisting();
         // Selector for the input field
         const inputNameField = await this.inputUserName;
@@ -220,15 +224,7 @@ class GiftCertificates extends Base {
               expect(displayedMessage).toBe('Please enter a valid email.');
               console.log(`Iteration ${i}: '${valueToEnter}' is valid. Message: '${displayedMessage}'`);
             } 
-            // else if (valueToEnter === ' ') {
-            //   // Handle blank input case
-            //   console.log(`Iteration ${i}: Blank input entered`);
-            //   // Wait for error message to display
-            //   await errorMessage.waitForDisplayed({ timeout: 5000 });
-            //   const displayedMessage = await errorMessage.getText();
-            //   await expect(errorMessage).toBe('Please enter a valid name and email.');
-            //   console.log(`Iteration ${i}: '${valueToEnter}' is invalid. Message: '${displayedMessage}'`);
-            // }
+            
             else {
               // Wait for the error message to display
               await errorMessage.waitForDisplayed({ timeout: 5000 });
@@ -278,7 +274,7 @@ class GiftCertificates extends Base {
 
         // await this.inputUserName.setValue('Travis');
         await this.inputUserName.setValue('Travis')
-        await this.inputEmailAddress.setValue('tdogging@hotmail.com');
+        await this.inputEmailAddress.setValue('test@test.com');
 
 
         await browser.switchToParentFrame();
