@@ -136,52 +136,7 @@ class GiftCertificates extends Base {
     }
     await inputNameField.setValue('t');
   }
-  
-  async giftTest () {
-    await this.CustomTreeMain();
-    
-    await browser.waitUntil(
-        async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/',
-        {
-          timeout: 15000, // Timeout in milliseconds
-          timeoutMsg: 'URL did not match the expected value within 5 seconds',
-        }
-      );
-
-    await this.giftCertificateLink.click();
-    await browser.waitUntil(
-      async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/gift-certificates',
-      {
-        timeout: 5000, // Timeout in milliseconds
-        timeoutMsg: 'URL did not match the expected value within 5 seconds',
-      }
-    );
-    await MainLinks.howItWorks.waitForExist({timeout: 5000});
-    await MainLinks.howItWorks.moveTo();
-    await this.iframe.waitForExist({ timeout: 5000 });
-    await this.iframe.waitForDisplayed({ timeout: 5000 });
-    //load iframe to interact with input fields
-    await this.iframe.moveTo();
-    await browser.switchFrame(this.iframe);
-    await browser.switchToParentFrame();
-    await browser.switchFrame(this.iframe);
-    await this.inputEmailAddress.waitForExist({timeout: 5000});
-    await this.inputEmailAddress.waitForDisplayed({timeout: 5000});
-    //Switch to next frame to click PayPal button
-    await this.iframePP.waitForExist({ timeout: 5000 });
-    await this.iframePP.waitForDisplayed({ timeout: 5000 });
-    await browser.switchFrame(this.iframePP);
-    await expect(this.payPalBtn).toBeExisting();
-    await this.payPalBtn.click();
-    // Switch back to the ParentFrame
-    await browser.switchToParentFrame();
-    await browser.switchToParentFrame();
-    await browser.switchFrame(this.iframe)
-    await expect(this.errormsg).toBeExisting();
-    await this.selectOptions();
-
-    await this.nameValidation();
-    
+  async emailValidation () {
     function getRandomEmail(localLength, domainLength, tldLength) {
       const baseCharacters1 = 'abcdefghijklmnopqrstuvwxyz';
       const specialCharacters1 = '0123456789';
@@ -238,8 +193,110 @@ class GiftCertificates extends Base {
       }
     }
   
+  }
+  
+  async giftTest () {
+    await this.CustomTreeMain();
+    
+    await browser.waitUntil(
+        async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/',
+        {
+          timeout: 15000, // Timeout in milliseconds
+          timeoutMsg: 'URL did not match the expected value within 5 seconds',
+        }
+      );
 
-    // await this.inputUserName.setValue('Travis');
+    await this.giftCertificateLink.click();
+    await browser.waitUntil(
+      async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/gift-certificates',
+      {
+        timeout: 5000, // Timeout in milliseconds
+        timeoutMsg: 'URL did not match the expected value within 5 seconds',
+      }
+    );
+    await MainLinks.howItWorks.waitForExist({timeout: 5000});
+    await MainLinks.howItWorks.moveTo();
+    await this.iframe.waitForExist({ timeout: 5000 });
+    await this.iframe.waitForDisplayed({ timeout: 5000 });
+    //load iframe to interact with input fields
+    await this.iframe.moveTo();
+    await browser.switchFrame(this.iframe);
+    await browser.switchToParentFrame();
+    await browser.switchFrame(this.iframe);
+    await this.inputEmailAddress.waitForExist({timeout: 5000});
+    await this.inputEmailAddress.waitForDisplayed({timeout: 5000});
+    //Switch to next frame to click PayPal button
+    await this.iframePP.waitForExist({ timeout: 5000 });
+    await this.iframePP.waitForDisplayed({ timeout: 5000 });
+    await browser.switchFrame(this.iframePP);
+    await expect(this.payPalBtn).toBeExisting();
+    await this.payPalBtn.click();
+    // Switch back to the ParentFrame
+    await browser.switchToParentFrame();
+    await browser.switchToParentFrame();
+    await browser.switchFrame(this.iframe)
+    await expect(this.errormsg).toBeExisting();
+    await this.selectOptions();
+
+    await this.nameValidation();
+    await this.emailValidation();
+    
+    // function getRandomEmail(localLength, domainLength, tldLength) {
+    //   const baseCharacters1 = 'abcdefghijklmnopqrstuvwxyz';
+    //   const specialCharacters1 = '0123456789';
+  
+    //   // Helper to generate a random string from a given character set
+    //   const getRandomFromSet = (length, charSet) => {
+    //       let result = '';
+    //       for (let i = 0; i < length; i++) {
+    //           const randomIndex = Math.floor(Math.random() * charSet.length);
+    //           result += charSet[randomIndex];
+    //       }
+    //       return result;
+    //   };
+  
+    //   // Generate email parts
+    //   const localPart = getRandomFromSet(localLength, baseCharacters1 + specialCharacters1); // characters before @
+    //   const domainPart = getRandomFromSet(domainLength, baseCharacters1); // characters for domain
+    //   const tld = getRandomFromSet(tldLength, baseCharacters1); // 2 characters for TLD
+  
+    //   // Combine parts to form the email
+    //   return `${localPart}@${domainPart}.${tld}`;
+    // }
+    // const inputEmailField = await this.inputEmailAddress;
+    // // Clear the input field
+    // await inputEmailField.clearValue(); // Ensure it's blank
+    // function isValidEmailFormat(inputEmailField) {
+    //   const emailRegex = /^[a-zA-Z0-9]{2,}@[a-zA-Z]{2,}\.[a-zA-Z]{2,}$/;
+    //   return emailRegex.test(inputEmailField);
+    // }
+    // for (let i = 0; i <= 10; i++) {
+    //   // Generate a random email Start with 0 characters for each part and increment by 1 for each iteration 
+
+    //   const valueToEnterEmail = getRandomEmail(0 + i, 0 + i, 0 + Math.floor(i / 2));
+    //   console.log(`Iteration ${i}: ${valueToEnterEmail}`);
+    //   const emailCheck = isValidEmailFormat(valueToEnterEmail);
+      
+    //   // Enter the new value
+    //   await inputEmailField.setValue(valueToEnterEmail);
+      
+    //   // Wait for the error message to display
+    //   const errorMessage = await this.errormsg;
+    //   await errorMessage.waitForDisplayed({ timeout: 5000 });
+    //   const displayedMessage1 = await errorMessage.getText();
+  
+    //   // Determine if the input is valid
+    //   if (emailCheck) {
+    //       // Validate the expected message for valid input
+    //       expect(displayedMessage1).toBe('You must fill out your name!');
+    //       console.log(`Iteration ${i}: '${valueToEnterEmail}' is valid. Message: '${displayedMessage1}'`);
+    //   } else {
+    //       // Validate the expected message for invalid input
+    //       expect(displayedMessage1).toBe('Please enter a valid name and email.');
+    //       console.log(`Iteration ${i}: '${valueToEnterEmail}' is invalid. Message: '${displayedMessage1}'`);
+    //   }
+    // }
+  
     await this.inputUserName.setValue('Travis')
     await this.inputEmailAddress.setValue('test@test.com');
 
