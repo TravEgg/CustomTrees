@@ -4,9 +4,7 @@ import Base from './Base.js';
  * sub page containing specific selectors and methods for a specific page
  */
 class OrderPage extends Base {
-    /**
-     * define selectors using getter methods
-     */
+   
     get orderDropDown () {
         return $('//span[contains(text(), "ORDER")]');
     }
@@ -70,6 +68,15 @@ class OrderPage extends Base {
     get giftCertificateLink() {
         return $('a[href="https://customfamilytreeart.com/gift-certificates"]');
     }
+
+    get optionTitle () {
+        return $('#optionTitle')
+    }
+    
+    get ancestryTrees() {
+        return $('//div[contains(text(), "Ancestry")]')
+    }
+
     async clickDesign() {
         if (await this.designChoice.isExisting()) {
             await this.designChoice.click();
@@ -79,28 +86,10 @@ class OrderPage extends Base {
             console.log("Neither designChoice nor orderATree exists.");
         }
     }
-    
-    get optionTitle () {
-        return $('#optionTitle')
-    }
-    
-    get ancestryTrees() {
-        return $('//div[contains(text(), "Ancestry")]')
-    }
-
-    async initialBgColor() {
-        const bgColorInitial = await this.descendantsOption.getCSSProperty('background-color');
-        return bgColorInitial.value;
-    }
-
-    async hoverBgColor() {
-        const bgColorHover = this.descendantsOption.getCSSProperty('background-color')
-        return bgColorHover.value;
-    }
 
     async ordertest () {
         await this.CustomTreeMain();
-        // expect drop down and click to open Order page
+
         await expect(this.orderDropDown).toBeExisting();
         await this.orderDropDown.moveTo();
         await  expect(this.orderOption).toBeExisting();
@@ -118,7 +107,7 @@ class OrderPage extends Base {
         await expect(this.ancestorOption).toBeExisting();
         //Move focus before starting the test loop
         await this.descendantRootsOption.moveTo();
-        //Set option names and elements for the Loop
+
         const options = [
             { name: 'Descendants', element: this.descendantsOption, },
             { name: 'Ancestor', element: this.ancestorOption, },
