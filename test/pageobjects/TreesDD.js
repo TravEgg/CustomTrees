@@ -57,6 +57,7 @@ class TreesDD extends Base {
     ];
     
     async treesddtest () {
+        await browser.refresh();
         await this.CustomTreeMain();
         await this.colorChange();
 
