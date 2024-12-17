@@ -43,7 +43,7 @@ class TreesDD extends Base {
         return $('//a[@class="no-decorations item-block internal-link"]')
     }
     async colorChange() {
-        await await this.treesDropDown.moveTo();
+        await this.treesDropDown.moveTo();
         const initialBgColor = await this.background.getCSSProperty('background-color');
         await this.ancestryTrees.moveTo();
         const hoverBgColor = await this.background.getCSSProperty('background-color');
