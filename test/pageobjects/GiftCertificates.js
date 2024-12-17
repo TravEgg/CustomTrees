@@ -22,6 +22,9 @@ class GiftCertificates extends Base {
   get payPalBtn() {
     return $('div[role="link"].paypal-button-number-0')
   }
+  get payLaterBtn() {
+    return $('div[role="link"].paypal-button-number-1')
+  }
 
   get errormsg() {
     return $('#my-error')
@@ -245,8 +248,40 @@ class GiftCertificates extends Base {
         timeout: 10000, 
         timeoutMsg: 'URL did not contain the expected text within the timeout'
     });
-  
+    await browser.closeWindow();
+
     await browser.switchToWindow(originalWindow);
+    
+    await browser.switchFrame(this.iframe)
+    await browser.switchFrame(this.iframePP)
+
+    await expect(this.payLaterBtn).toBeExisting();
+    const originalWindow1 = await browser.getWindowHandle();
+    await this.payLaterBtn.click();
+
+    await browser.waitUntil(
+        async () => (await browser.getWindowHandles()).length > 1,
+        {
+            timeout: 5000, 
+            timeoutMsg: 'New window did not open within 5 seconds',
+        }
+    );
+    
+    const allWindows1 = await browser.getWindowHandles();
+    for (const handle of allWindows1) {
+        if (handle !== originalWindow1) {
+            await browser.switchToWindow(handle);
+            break;
+        }
+    }
+
+    await browser.waitUntil(() => browser.getUrl().then(url => url.includes('paypal')),
+    {
+        timeout: 10000, 
+        timeoutMsg: 'URL did not contain the expected text within the timeout'
+    });
+  
+    await browser.switchToWindow(originalWindow1);
 
 
     await browser.switchToParentFrame();
