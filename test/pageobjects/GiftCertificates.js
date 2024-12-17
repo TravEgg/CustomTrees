@@ -167,7 +167,53 @@ class GiftCertificates extends Base {
     }
   
   }
-  
+  async palPalValidation() {
+     
+    async function handleButtonClick(button, urlSubstring) {
+      await expect(button).toBeExisting();
+
+      const originalWindow = await browser.getWindowHandle();
+
+      await button.click();
+
+      await browser.waitUntil(
+          async () => (await browser.getWindowHandles()).length > 1,
+          {
+              timeout: 5000,
+              timeoutMsg: 'New window did not open within 5 seconds',
+          }
+      );
+
+      const allWindows = await browser.getWindowHandles();
+      for (const handle of allWindows) {
+          if (handle !== originalWindow) {
+              await browser.switchToWindow(handle);
+              break;
+          }
+      }
+
+      await browser.waitUntil(
+          async () => (await browser.getUrl()).includes(urlSubstring),
+          {
+              timeout: 10000,
+              timeoutMsg: `URL did not contain the expected text: ${urlSubstring}`,
+          }
+      );
+
+      await browser.closeWindow();
+
+      await browser.switchToWindow(originalWindow);
+
+    }
+    await browser.switchFrame(this.iframe);
+    await browser.switchFrame(this.iframePP);
+    await handleButtonClick(this.payPalBtn,  'paypal'); 
+    await browser.switchFrame(this.iframe);
+    await browser.switchFrame(this.iframePP);
+    await handleButtonClick(this.payLaterBtn,  'paypal'); 
+  }
+
+
   async giftTest () {
     await this.CustomTreeMain();
     
@@ -219,76 +265,13 @@ class GiftCertificates extends Base {
     await this.inputEmailAddress.setValue('test@test.com');
 
     await browser.switchToParentFrame();
-    await browser.switchFrame(this.iframe)
-    await browser.switchFrame(this.iframePP)
-
-    await expect(this.payPalBtn).toBeExisting();
-    const originalWindow = await browser.getWindowHandle();
-    await this.payPalBtn.click();
-
-    await browser.waitUntil(
-        async () => (await browser.getWindowHandles()).length > 1,
-        {
-            timeout: 5000, 
-            timeoutMsg: 'New window did not open within 5 seconds',
-        }
-    );
-
-    const allWindows = await browser.getWindowHandles();
-
-    for (const handle of allWindows) {
-        if (handle !== originalWindow) {
-            await browser.switchToWindow(handle);
-            break;
-        }
-    }
-
-    await browser.waitUntil(() => browser.getUrl().then(url => url.includes('paypal')),
-    {
-        timeout: 10000, 
-        timeoutMsg: 'URL did not contain the expected text within the timeout'
-    });
-    await browser.closeWindow();
-
-    await browser.switchToWindow(originalWindow);
     
-    await browser.switchFrame(this.iframe)
-    await browser.switchFrame(this.iframePP)
-
-    await expect(this.payLaterBtn).toBeExisting();
-    const originalWindow1 = await browser.getWindowHandle();
-    await this.payLaterBtn.click();
-
-    await browser.waitUntil(
-        async () => (await browser.getWindowHandles()).length > 1,
-        {
-            timeout: 5000, 
-            timeoutMsg: 'New window did not open within 5 seconds',
-        }
-    );
-    
-    const allWindows1 = await browser.getWindowHandles();
-    for (const handle of allWindows1) {
-        if (handle !== originalWindow1) {
-            await browser.switchToWindow(handle);
-            break;
-        }
-    }
-
-    await browser.waitUntil(() => browser.getUrl().then(url => url.includes('paypal')),
-    {
-        timeout: 10000, 
-        timeoutMsg: 'URL did not contain the expected text within the timeout'
-    });
-  
-    await browser.switchToWindow(originalWindow1);
-
+    await this.palPalValidation();
 
     await browser.switchToParentFrame();
     await browser.switchToParentFrame();
+  };
+};
 
-  }
 
-  
-}
 export default new GiftCertificates ();
