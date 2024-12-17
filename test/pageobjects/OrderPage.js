@@ -1,8 +1,5 @@
 import Base from './Base.js';
 
-/**
- * sub page containing specific selectors and methods for a specific page
- */
 class OrderPage extends Base {
    
     get orderDropDown () {
@@ -101,11 +98,11 @@ class OrderPage extends Base {
               timeoutMsg: 'URL did not match the expected value within 5 seconds',
             }
           );
-          //Check if it opens to page with Choose Design before going to the Order page
+
         await this.designChoice.moveTo();
         await this.clickDesign();
         await expect(this.ancestorOption).toBeExisting();
-        //Move focus before starting the test loop
+
         await this.descendantRootsOption.moveTo();
 
         const options = [
@@ -114,41 +111,33 @@ class OrderPage extends Base {
             { name: 'Ancestor Roots', element: this.ancestorRootsOption, },
             { name: 'Descendant Roots', element: this.descendantRootsOption, }
         ];
-        //Loop to check the colors of background as each option is highlighted and clicked
+
         for (const option of options) {
             console.log(`Checking option: ${option.name}`);
     
-            // Store the initial background color
             const initialBgColor = await option.element.getCSSProperty('background-color');
-    
-            // Perform hover action and get hover background color
+            
             await option.element.moveTo();
             const hoverBgColor = await option.element.getCSSProperty('background-color');
-    
-            // Assert that the hover color is different from the initial color
             await expect(hoverBgColor.value).not.toBe(initialBgColor.value);
-    
-            // Click the element and get the background color after clicking
+
             await option.element.click();
             const clickBgColor = await option.element.getCSSProperty('background-color');
     
-            // Assert that the clicked color is different from the hover color
             await expect(clickBgColor.value).not.toBe(hoverBgColor.value);
             console.log(`${option.name} clicked color: ${clickBgColor.value}`);
     
-            // Navigate to the next and back buttons
             await this.nextButton.click();
             await this.ordertohomePage.moveTo();
-            // Verify that the correct page is displayed
+
             await expect(this.optionTitle).toBeDisplayed();
             console.log(`${option.name} next page is displayed correctly.`);
-            // go back to the main order page
+
             await this.backButton.click();
         }
 
-        //return to the Home Page
         await this.ordertohomePage.click();
-        //Check other links in order drop down
+
         await this.orderDropDown.moveTo();
         await this.giftOption.click();
         await expect(this.giftCertificateLink).toBeExisting();

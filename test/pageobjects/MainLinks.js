@@ -1,13 +1,9 @@
 import Base from './Base.js';
 import TreesDD from './TreesDD.js';
 
-/**
- * Links on Main page 
- */
+
 class MainPage extends Base {
-    /**
-     * Selectors 
-     */
+
     get howItWorks () {
         return $('//span[contains(text(), "How It Works")]')
     }
@@ -41,35 +37,29 @@ class MainPage extends Base {
 
     async mainLinksTest () {
         await this.CustomTreeMain();
-        // Open Main Page
+
         await browser.waitUntil(
             async () => (await browser.getUrl()) === 'https://customfamilytreeart.com/',
             {
-              timeout: 5000, // Timeout in milliseconds
+              timeout: 5000, 
               timeoutMsg: 'URL did not match the expected value within 5 seconds',
             }
           );
         
-        //Loop through the Info Links and check that the page opens
         for (const link of this.infoLinks) {
-          
-            // Click the current menu option
-                    await link.element().click();
-          
-            // Wait for the URL to match the expected value
-                    await browser.waitUntil(
-                        async () => (await browser.getUrl()) === link.url,
-                        {
-                            timeout: 5000, // Timeout in milliseconds
-                            timeoutMsg: `URL did not match the expected value for ${link.url} within 5 seconds`,
-                        }
-                    );
-          
-            // Optionally, navigate back to the home page after each interaction
-                    if (this.homePage) {
-                        await this.homePage.click();
-                    }
+            await link.element().click();
+            await browser.waitUntil(
+                async () => (await browser.getUrl()) === link.url,
+                {
+                    timeout: 5000,
+                    timeoutMsg: `URL did not match the expected value for ${link.url} within 5 seconds`,
                 }
+            );
+          
+            if (this.homePage) {
+                await this.homePage.click();
+            }
+        }
 
     }
 }
