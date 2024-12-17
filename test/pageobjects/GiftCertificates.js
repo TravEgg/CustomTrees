@@ -83,10 +83,8 @@ class GiftCertificates extends Base {
           return false;
       }
   
-      // Check if the first two characters are special characters
       const firstTwoSpecial = specialCharacters.test(input[0]) && specialCharacters.test(input[1]);
       
-      // Check if two of the first three characters are special characters
       const firstThree = input.slice(0, 3);
       const specialCount = [...firstThree].filter(char => specialCharacters.test(char)).length;
   
