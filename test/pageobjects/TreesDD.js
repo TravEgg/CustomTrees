@@ -39,7 +39,16 @@ class TreesDD extends Base {
         return $('//div[contains(text(), "Your Family History")]')
     }
     ddOptions = ['Ancestry', 'Descendant', 'Additional', 'Gallery'];
-
+    get background () {
+        return $('//a[@class="no-decorations item-block internal-link"]')
+    }
+    async colorChange() {
+        await await this.treesDropDown.moveTo();
+        const initialBgColor = await this.background.getCSSProperty('background-color');
+        await this.ancestryTrees.moveTo();
+        const hoverBgColor = await this.background.getCSSProperty('background-color');
+        await expect(hoverBgColor.value).not.toBe(initialBgColor.value);
+    }
     menuOptions = [
     { element: () => this.ancestryTrees, url: 'https://customfamilytreeart.com/ancestry-trees' },
     { element: () => this.descendantTrees, url: 'https://customfamilytreeart.com/descendant-trees' },
@@ -49,9 +58,13 @@ class TreesDD extends Base {
     
     async treesddtest () {
         await this.CustomTreeMain();
+        await this.colorChange();
+
         for (const option of this.menuOptions) {
             await this.treesDropDown.moveTo();
+            await option.element().moveTo();            
             await option.element().click();
+
   
             await browser.waitUntil(
                 async () => (await browser.getUrl()) === option.url,
